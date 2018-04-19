@@ -1,9 +1,13 @@
 syntax = "proto3";
 
-package com.learning.springbootserialization.gateway.kafka;
+package com.learning.springbootserialization.gateway.http;
 
-option java_package = "com.learning.springbootserialization.gateway.kafka.proto";
+option java_package = "com.learning.springbootserialization.gateway.http.proto";
 option java_outer_classname = "OrderProto";
+
+message Orders {
+    repeated Order orders = 1;
+}
 
 message Order {
     string oid = 1;
