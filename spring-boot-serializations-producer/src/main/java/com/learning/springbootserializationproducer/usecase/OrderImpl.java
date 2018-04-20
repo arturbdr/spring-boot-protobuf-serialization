@@ -1,11 +1,10 @@
-package com.learning.springbootserialization.usecase;
+package com.learning.springbootserializationproducer.usecase;
 
-import com.learning.springbootserialization.domain.Order;
-import com.learning.springbootserialization.domain.Person;
-import com.learning.springbootserialization.domain.Sku;
-import com.learning.springbootserialization.domain.SkuType;
+import com.learning.springbootserializationproducer.domain.Order;
+import com.learning.springbootserializationproducer.domain.Person;
+import com.learning.springbootserializationproducer.domain.Sku;
+import com.learning.springbootserializationproducer.domain.SkuType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
@@ -19,11 +18,11 @@ import java.util.stream.IntStream;
 @Slf4j
 public class OrderImpl {
     private static final int MAX_PRICE_IN_CENTS = 100000;
-    private static final String SKU_SAPATENIS = "941-6957-219-41";
+    private static final int ORDER_ID = 10000000;
+    private static final String PERSON_NAME = "John";
     private static final String SKU_CAMISA_SELECAO = "D12-9560-046-04";
     private static final String SKU_GIFT = "121-3434-121-21";
-    private static final int ORDER_ID = 10000000;
-    private static final String PERSON_NAME = "Outback";
+    private static final String SKU_SAPATENIS = "941-6957-219-41";
 
     public Collection<Order> getOrders(int totalElements) {
         StopWatch stopWatch = new StopWatch();

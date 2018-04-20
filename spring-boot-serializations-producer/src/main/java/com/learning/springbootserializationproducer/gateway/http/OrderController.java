@@ -1,9 +1,9 @@
-package com.learning.springbootserialization.gateway.http;
+package com.learning.springbootserializationproducer.gateway.http;
 
-import com.learning.springbootserialization.domain.Order;
-import com.learning.springbootserialization.gateway.http.proto.OrderProto;
-import com.learning.springbootserialization.usecase.OrderImpl;
-import com.learning.springbootserialization.usecase.ProtobufOrderImpl;
+import com.learning.springbootserializationproducer.domain.Order;
+import com.learning.springbootserializationproducer.gateway.http.proto.OrderProto;
+import com.learning.springbootserializationproducer.usecase.OrderImpl;
+import com.learning.springbootserializationproducer.usecase.ProtobufOrderImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.learning.springbootserialization.config;
+package com.learning.springbootserializationproducer.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

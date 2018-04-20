@@ -1,6 +1,6 @@
-package com.learning.springbootserialization.usecase;
+package com.learning.springbootserializationproducer.usecase;
 
-import com.learning.springbootserialization.gateway.http.proto.OrderProto;
+import com.learning.springbootserializationproducer.gateway.http.proto.OrderProto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
@@ -11,10 +11,9 @@ import java.util.stream.IntStream;
 @Service
 @Slf4j
 public class ProtobufOrderImpl {
-
     private static final int MAX_PRICE_IN_CENTS = 100000;
     private static final int ORDER_ID = 10000000;
-    private static final String PERSON_NAME = "Outback";
+    private static final String PERSON_NAME = "John";
     private static final String SKU_CAMISA_SELECAO = "D12-9560-046-04";
     private static final String SKU_GIFT = "121-3434-121-21";
     private static final String SKU_SAPATENIS = "941-6957-219-41";

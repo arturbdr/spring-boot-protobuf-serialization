@@ -1,4 +1,4 @@
-package com.learning.springbootserialization;
+package com.learning.springbootserializationproducer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
