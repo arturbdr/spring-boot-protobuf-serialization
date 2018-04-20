@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 public class OrderImpl {
     private static final int MAX_PRICE_IN_CENTS = 100000;
     private static final int ORDER_ID = 10000000;
-    private static final String PERSON_NAME = "John";
+    private static final String PERSON_NAME = "John Conceição";
     private static final String SKU_CAMISA_SELECAO = "D12-9560-046-04";
     private static final String SKU_GIFT = "121-3434-121-21";
     private static final String SKU_SAPATENIS = "941-6957-219-41";
@@ -31,7 +31,7 @@ public class OrderImpl {
 
         Collection<Order> orderCollection = new ArrayList<>();
 
-        IntStream.range(1, totalElements)
+        IntStream.range(0, totalElements)
                 .forEach(
                         i -> {
                             final Sku skuSapatenis =
