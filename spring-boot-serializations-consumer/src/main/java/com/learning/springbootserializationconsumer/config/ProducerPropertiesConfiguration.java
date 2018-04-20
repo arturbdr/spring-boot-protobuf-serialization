@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(value = "app.config")
 @Data
 @Component
-public class ProducerConfiguration {
+public class ProducerPropertiesConfiguration {
     private String producerProtobufUrl;
     private String producerJsonUrl;
 }

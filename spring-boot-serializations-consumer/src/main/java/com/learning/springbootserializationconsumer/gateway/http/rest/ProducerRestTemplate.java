@@ -1,6 +1,6 @@
 package com.learning.springbootserializationconsumer.gateway.http.rest;
 
-import com.learning.springbootserializationconsumer.config.ProducerConfiguration;
+import com.learning.springbootserializationconsumer.config.ProducerPropertiesConfiguration;
 import com.learning.springbootserializationconsumer.domain.Order;
 import com.learning.springbootserializationproducer.gateway.http.proto.OrderProto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +18,22 @@ import java.util.Collection;
 @Component
 public class ProducerRestTemplate {
 
-    private final ProducerConfiguration producerConfiguration;
+    private final ProducerPropertiesConfiguration producerPropertiesConfiguration;
     private final RestTemplate protoRestTemplate;
     private final RestTemplate defaultRestTemplate;
 
     @Autowired
-    public ProducerRestTemplate(ProducerConfiguration producerConfiguration,
+    public ProducerRestTemplate(ProducerPropertiesConfiguration producerPropertiesConfiguration,
                                 @Qualifier("protoRestTemplate") RestTemplate protoRestTemplate,
                                 @Qualifier("defaultRestTemplate") RestTemplate defaultRestTemplate) {
-        this.producerConfiguration = producerConfiguration;
+        this.producerPropertiesConfiguration = producerPropertiesConfiguration;
         this.protoRestTemplate = protoRestTemplate;
         this.defaultRestTemplate = defaultRestTemplate;
     }
 
     public OrderProto.Orders getOrdersProto(int totalElements) {
 
-        final URI uri = UriComponentsBuilder.fromHttpUrl(producerConfiguration.getProducerProtobufUrl())
+        final URI uri = UriComponentsBuilder.fromHttpUrl(producerPropertiesConfiguration.getProducerProtobufUrl())
                 .path(String.valueOf(totalElements))
                 .build().encode().toUri();
 
@@ -46,7 +46,7 @@ public class ProducerRestTemplate {
     }
 
     public Collection<Order> getOrders(int totalElements) {
-        final URI uri = UriComponentsBuilder.fromHttpUrl(producerConfiguration.getProducerJsonUrl())
+        final URI uri = UriComponentsBuilder.fromHttpUrl(producerPropertiesConfiguration.getProducerJsonUrl())
                 .path(String.valueOf(totalElements))
                 .build().encode().toUri();
 
