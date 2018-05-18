@@ -17,7 +17,7 @@ message Person {
 }
 message Product {
     string id = 1;
-    int32 price = 2;
+    int32 priceInCents = 2;
     ProductType productType = 3;
     enum ProductType {
         GIFT = 0;

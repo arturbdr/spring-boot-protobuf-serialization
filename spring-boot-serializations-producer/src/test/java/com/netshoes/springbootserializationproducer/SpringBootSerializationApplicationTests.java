@@ -1,4 +1,4 @@
-package com.learning.springbootserializationproducer;
+package com.netshoes.springbootserializationproducer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

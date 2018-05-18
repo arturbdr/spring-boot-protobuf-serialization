@@ -27,7 +27,7 @@ public class MockedDataProducer implements OrderGateway {
 
     @Override
     public Collection<Order> regularOrders(int totalElements) {
-        Collection<Order> orderCollection = new ArrayList<>();
+        final Collection<Order> orderCollection = new ArrayList<>(totalElements);
 
         IntStream.range(0, totalElements)
                 .forEach(
@@ -46,7 +46,7 @@ public class MockedDataProducer implements OrderGateway {
                                             .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 
-                            final Product productGift =
+                            final Product product3 =
                                     Product.builder()
                                             .id(ID_PRODUCT_3)
                                             .productType(ProductType.GIFT)
@@ -59,7 +59,7 @@ public class MockedDataProducer implements OrderGateway {
                                     Order.builder()
                                             .orderId(String.valueOf(INITIAL_ORDER_ID + iteration))
                                             .person(person)
-                                            .productCollection(Arrays.asList(product2, productGift, product1))
+                                            .productCollection(Arrays.asList(product1, product2, product3))
                                             .build();
                             orderCollection.add(order);
                         });
@@ -69,7 +69,7 @@ public class MockedDataProducer implements OrderGateway {
 
     @Override
     public OrdersProto.Orders protobufOrders(int totalElements) {
-        OrdersProto.Orders.Builder orders = OrdersProto.Orders.newBuilder();
+        final OrdersProto.Orders.Builder orders = OrdersProto.Orders.newBuilder();
 
         IntStream.range(0, totalElements)
                 .forEach(
@@ -78,21 +78,21 @@ public class MockedDataProducer implements OrderGateway {
                                     OrdersProto.Product.newBuilder()
                                             .setId(ID_PRODUCT_1)
                                             .setProductType(OrdersProto.Product.ProductType.COMMON)
-                                            .setPrice(new Random().nextInt(PRICE_IN_CENTS))
+                                            .setPriceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 
                             final OrdersProto.Product product2 =
                                     OrdersProto.Product.newBuilder()
                                             .setId(ID_PRODUCT_2)
                                             .setProductType(OrdersProto.Product.ProductType.COMMON)
-                                            .setPrice(new Random().nextInt(PRICE_IN_CENTS))
+                                            .setPriceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 
                             final OrdersProto.Product product3 =
                                     OrdersProto.Product.newBuilder()
                                             .setId(ID_PRODUCT_3)
                                             .setProductType(OrdersProto.Product.ProductType.GIFT)
-                                            .setPrice(new Random().nextInt(PRICE_IN_CENTS))
+                                            .setPriceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 
                             final OrdersProto.Person person = OrdersProto.Person.newBuilder().setName(PERSON_NAME).build();
@@ -101,13 +101,12 @@ public class MockedDataProducer implements OrderGateway {
                                     OrdersProto.Order.newBuilder()
                                             .setOrderId(String.valueOf(INITIAL_ORDER_ID + iteration))
                                             .setPerson(person)
-                                            .addProduct(product2)
                                             .addProduct(product1)
+                                            .addProduct(product2)
                                             .addProduct(product3)
                                             .build();
                             orders.addOrders(order);
                         });
-
 
         return orders.build();
     }
