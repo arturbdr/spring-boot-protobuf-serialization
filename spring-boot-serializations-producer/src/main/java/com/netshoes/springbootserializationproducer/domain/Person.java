@@ -1,4 +1,4 @@
-package com.learning.springbootserializationproducer.domain;
+package com.netshoes.springbootserializationproducer.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

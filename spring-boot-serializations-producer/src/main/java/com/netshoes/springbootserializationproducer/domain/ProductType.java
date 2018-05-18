@@ -1,11 +1,11 @@
-package com.learning.springbootserializationproducer.domain;
+package com.netshoes.springbootserializationproducer.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SkuType {
+public enum ProductType {
 
     GIFT(0),
     NORMAL(1);
