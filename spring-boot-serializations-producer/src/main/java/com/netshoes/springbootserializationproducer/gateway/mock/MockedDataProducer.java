@@ -35,21 +35,21 @@ public class MockedDataProducer implements OrderGateway {
                             final Product product1 =
                                     Product.builder()
                                             .id(ID_PRODUCT_1)
-                                            .productType(ProductType.NORMAL)
+                                            .productType(ProductType.COMMON)
                                             .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 
                             final Product product2 =
                                     Product.builder()
                                             .id(ID_PRODUCT_2)
-                                            .productType(ProductType.NORMAL)
+                                            .productType(ProductType.COMMON)
                                             .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 
                             final Product product3 =
                                     Product.builder()
                                             .id(ID_PRODUCT_3)
-                                            .productType(ProductType.GIFT)
+                                            .productType(ProductType.COMMON)
                                             .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
                                             .build();
 

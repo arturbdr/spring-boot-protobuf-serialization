@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum ProductType {
 
     GIFT(0),
-    NORMAL(1);
+    COMMON(1);
     private int type;
 }
