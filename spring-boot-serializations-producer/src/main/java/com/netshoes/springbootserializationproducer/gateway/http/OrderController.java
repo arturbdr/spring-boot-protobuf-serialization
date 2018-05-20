@@ -20,8 +20,8 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/proto/order/{totalElement}")
-    public OrdersProto.Orders getOrdersProto(@PathVariable int totalElement) {
+    @GetMapping(value = "/proto/order/{totalElement}")
+    public ResponseEntity<OrdersProto.Orders> getOrdersProto(@PathVariable int totalElement) {
         final StopWatch stopWatch = new StopWatch();
         stopWatch.start("getOrdersProto");
 
@@ -29,8 +29,7 @@ public class OrderController {
 
         stopWatch.stop();
         log.info("Total time in milliseconds getOrdersProto: {}", stopWatch.getLastTaskTimeMillis());
-        return protobufOrders;
-
+        return ResponseEntity.ok(protobufOrders);
     }
 
     @GetMapping("/order/{totalElement}")
