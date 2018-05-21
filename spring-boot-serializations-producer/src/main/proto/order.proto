@@ -1,5 +1,5 @@
 syntax = "proto3";
-package com.netshoes.springbootserialization.proto;
+package com.article.springbootserialization.proto;
 
 option java_outer_classname = "OrdersProto";
 

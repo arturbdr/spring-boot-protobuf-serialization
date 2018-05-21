@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.netshoes</groupId>
+    <groupId>com.article</groupId>
     <artifactId>spring-boot-serialization-producer</artifactId>
     <version>1.0.0.RELEASE</version>
     <packaging>jar</packaging>
@@ -11,8 +11,8 @@
     <name>spring-boot-serialization-producer</name>
     <description>
         Spring Boot serialization producer
-        This microservices is reponsible for producing RESTful webservices serializing
-        binary data with protobuf
+        This microservice is reponsible for producing RESTful webservices serializing
+        binary data with protobuf and JSON
     </description>
 
     <parent>
