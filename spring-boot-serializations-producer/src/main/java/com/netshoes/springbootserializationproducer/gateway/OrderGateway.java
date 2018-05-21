@@ -1,6 +1,6 @@
 package com.netshoes.springbootserializationproducer.gateway;
 
-import com.netshoes.springbootserialization.gateway.http.proto.OrdersProto;
+import com.netshoes.springbootserialization.proto.OrdersProto;
 import com.netshoes.springbootserializationproducer.domain.Order;
 
 import java.util.Collection;

@@ -1,6 +1,6 @@
 package com.netshoes.springbootserializationproducer.usecase;
 
-import com.netshoes.springbootserialization.gateway.http.proto.OrdersProto;
+import com.netshoes.springbootserialization.proto.OrdersProto;
 import com.netshoes.springbootserializationproducer.domain.Order;
 import com.netshoes.springbootserializationproducer.gateway.OrderGateway;
 import lombok.RequiredArgsConstructor;

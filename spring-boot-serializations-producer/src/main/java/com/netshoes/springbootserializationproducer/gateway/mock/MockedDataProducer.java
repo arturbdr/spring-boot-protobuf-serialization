@@ -1,6 +1,6 @@
 package com.netshoes.springbootserializationproducer.gateway.mock;
 
-import com.netshoes.springbootserialization.gateway.http.proto.OrdersProto;
+import com.netshoes.springbootserialization.proto.OrdersProto;
 import com.netshoes.springbootserializationproducer.domain.Order;
 import com.netshoes.springbootserializationproducer.domain.Person;
 import com.netshoes.springbootserializationproducer.domain.Product;
