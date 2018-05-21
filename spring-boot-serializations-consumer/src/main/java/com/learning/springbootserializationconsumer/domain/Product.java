@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sku {
+public class Product {
     private String id;
-    private int price;
-    private SkuType skutype;
+    private int priceInCents;
+    private ProductType productType;
 }

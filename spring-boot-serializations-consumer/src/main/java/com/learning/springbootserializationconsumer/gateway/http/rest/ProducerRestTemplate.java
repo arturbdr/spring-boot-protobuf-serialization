@@ -2,7 +2,8 @@ package com.learning.springbootserializationconsumer.gateway.http.rest;
 
 import com.learning.springbootserializationconsumer.config.ProducerPropertiesConfiguration;
 import com.learning.springbootserializationconsumer.domain.Order;
-import com.learning.springbootserializationproducer.gateway.http.proto.OrderProto;
+import com.learning.springbootserializationconsumer.gateway.ProducerGateway;
+import com.netshoes.springbootserialization.proto.OrdersProto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -16,7 +17,7 @@ import java.net.URI;
 import java.util.Collection;
 
 @Component
-public class ProducerRestTemplate {
+public class ProducerRestTemplate implements ProducerGateway {
 
     private final ProducerPropertiesConfiguration producerPropertiesConfiguration;
     private final RestTemplate protoRestTemplate;
@@ -31,7 +32,8 @@ public class ProducerRestTemplate {
         this.defaultRestTemplate = defaultRestTemplate;
     }
 
-    public OrderProto.Orders getOrdersProto(int totalElements) {
+    @Override
+    public OrdersProto.Orders getOrdersProto(int totalElements) {
 
         final URI uri = UriComponentsBuilder.fromHttpUrl(producerPropertiesConfiguration.getProducerProtobufUrl())
                 .path(String.valueOf(totalElements))
@@ -41,10 +43,11 @@ public class ProducerRestTemplate {
                 .get(uri)
                 .build();
 
-        final ResponseEntity<OrderProto.Orders> responseEntity = protoRestTemplate.exchange(requestEntity, OrderProto.Orders.class);
+        final ResponseEntity<OrdersProto.Orders> responseEntity = protoRestTemplate.exchange(requestEntity, OrdersProto.Orders.class);
         return responseEntity.getBody();
     }
 
+    @Override
     public Collection<Order> getOrders(int totalElements) {
         final URI uri = UriComponentsBuilder.fromHttpUrl(producerPropertiesConfiguration.getProducerJsonUrl())
                 .path(String.valueOf(totalElements))
@@ -54,8 +57,9 @@ public class ProducerRestTemplate {
                 .get(uri)
                 .build();
 
-        final ResponseEntity<Collection<Order>> responseEntity = defaultRestTemplate.exchange(requestEntity, new ParameterizedTypeReference<Collection<Order>>() {
-        });
+        final ResponseEntity<Collection<Order>> responseEntity =
+                defaultRestTemplate.exchange(requestEntity, new ParameterizedTypeReference<Collection<Order>>() {
+                });
         return responseEntity.getBody();
     }
 }

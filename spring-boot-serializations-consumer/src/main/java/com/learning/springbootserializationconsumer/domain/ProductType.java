@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SkuType {
+public enum ProductType {
 
     GIFT(0),
-    NORMAL(1);
+    COMMON(1);
     private int type;
 }

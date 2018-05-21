@@ -12,7 +12,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    private String oid;
+    private String orderId;
     private Person person;
-    private Collection<Sku> skuCollection;
+    private Collection<Product> productCollection;
 }
