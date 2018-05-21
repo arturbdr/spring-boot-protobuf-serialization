@@ -1,11 +1,11 @@
 package com.netshoes.springbootserializationproducer.gateway.mock;
 
+import com.netshoes.springbootserialization.gateway.http.proto.OrdersProto;
 import com.netshoes.springbootserializationproducer.domain.Order;
 import com.netshoes.springbootserializationproducer.domain.Person;
 import com.netshoes.springbootserializationproducer.domain.Product;
 import com.netshoes.springbootserializationproducer.domain.ProductType;
 import com.netshoes.springbootserializationproducer.gateway.OrderGateway;
-import com.netshoes.springbootserializationproducer.gateway.http.proto.OrdersProto;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 

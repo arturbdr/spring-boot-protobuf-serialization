@@ -1,7 +1,7 @@
 package com.netshoes.springbootserializationproducer.gateway.http;
 
+import com.netshoes.springbootserialization.gateway.http.proto.OrdersProto;
 import com.netshoes.springbootserializationproducer.domain.Order;
-import com.netshoes.springbootserializationproducer.gateway.http.proto.OrdersProto;
 import com.netshoes.springbootserializationproducer.usecase.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
