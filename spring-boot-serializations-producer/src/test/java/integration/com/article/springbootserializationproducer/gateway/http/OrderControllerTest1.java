@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(OrderController.class)
 @ContextConfiguration(classes = SpringBootSerializationApplication.class)
-public class OrderControllerTest {
+public class OrderControllerTest1 {
 
     @MockBean
     OrderService orderService;
@@ -36,13 +36,4 @@ public class OrderControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void testGetOrders() throws Exception {
-//        when(orderService.getOrders(anyInt())).thenReturn(Arrays.<Order>asList(new Order("orderId", new Person("name"), Arrays.<Product>asList(new Product("id", 0, ProductType.GIFT)))));
-//
-//        ResponseEntity<Collection<Order>> result = orderController.getOrders(0);
-//        Assert.assertEquals(null, result);
-    }
 }
-
-//Generated with love by TestMe :) Please report issues and submit feature requests at: http://weirddev.com/forum#!/testme

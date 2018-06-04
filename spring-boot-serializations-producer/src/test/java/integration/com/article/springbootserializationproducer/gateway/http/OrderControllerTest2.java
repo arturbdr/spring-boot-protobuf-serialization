@@ -1,68 +1,61 @@
-package unit.com.article.springbootserializationproducer.gateway.http;
+package integration.com.article.springbootserializationproducer.gateway.http;
 
 import com.article.springbootserialization.proto.OrdersProto;
+import com.article.springbootserializationproducer.SpringBootSerializationApplication;
 import com.article.springbootserializationproducer.domain.Order;
 import com.article.springbootserializationproducer.domain.Person;
 import com.article.springbootserializationproducer.domain.Product;
 import com.article.springbootserializationproducer.domain.ProductType;
-import com.article.springbootserializationproducer.gateway.http.OrderController;
-import com.article.springbootserializationproducer.usecase.OrderService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
+import org.assertj.core.api.BDDAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Random;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
-public class OrderControllerTest {
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@ContextConfiguration(classes = SpringBootSerializationApplication.class)
+public class OrderControllerTest2 {
 
-    @Mock
-    OrderService orderService;
+    @LocalServerPort
+    private int port;
 
-    private MockMvc mockMvc;
-
-    private ObjectMapper objectMapper;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        OrderController orderController = new OrderController(orderService);
-        mockMvc = MockMvcBuilders.standaloneSetup(orderController)
-                .setMessageConverters(new ProtobufHttpMessageConverter(), new MappingJackson2HttpMessageConverter())
-                .build();
-
-        objectMapper = new ObjectMapper();
-    }
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     public void testGetOrdersProtoShouldReturn() throws Exception {
         int totalElements = 10;
 
-        mockMvc.perform(get("/proto/order/" + totalElements))
-                .andDo(print())
-                .andExpect(status().isOk());
+        final URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/proto/order/")
+                .path(String.valueOf(totalElements))
+                .build().encode().toUri();
+
+        final RequestEntity<Void> requestEntity = RequestEntity
+                .get(uri)
+                .build();
+
+        final ResponseEntity<OrdersProto.Orders> responseEntity = restTemplate
+                .exchange(requestEntity, OrdersProto.Orders.class);
+
+        BDDAssertions.then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -71,18 +64,24 @@ public class OrderControllerTest {
 
         OrdersProto.Orders originalData = getProtoData(10);
 
-        when(orderService.getProtobufOrders(10)).thenReturn(originalData);
+        final URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/proto/order/")
+                .path(String.valueOf(totalElements))
+                .build().encode().toUri();
 
-        MvcResult mvcResult = mockMvc.perform(get("/proto/order/" + totalElements))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(header().string("Content-Type", "application/x-protobuf;charset=UTF-8"))
-                .andExpect(header().string("X-Protobuf-Message", "com.article.springbootserialization.proto.Orders"))
-                .andExpect(header().string("X-Protobuf-Schema", "order.proto"))
-                .andReturn();
+        final RequestEntity<Void> requestEntity = RequestEntity
+                .get(uri)
+                .build();
 
-        OrdersProto.Orders returnedData = OrdersProto.Orders.parseFrom(mvcResult.getResponse().getContentAsByteArray());
-        assertEquals(returnedData, originalData);
+        final ResponseEntity<OrdersProto.Orders> responseEntity = restTemplate
+                .exchange(requestEntity, OrdersProto.Orders.class);
+
+        OrdersProto.Orders responseOrderData = OrdersProto.Orders.parseFrom(responseEntity.getBody().toByteArray());
+
+        BDDAssertions.then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BDDAssertions.then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/x-protobuf;charset=UTF-8");
+        BDDAssertions.then(responseEntity.getHeaders().getFirst("X-Protobuf-Message")).isEqualTo("com.article.springbootserialization.proto.Orders");
+        BDDAssertions.then(responseEntity.getHeaders().getFirst("X-Protobuf-Schema")).isEqualTo("order.proto");
+        BDDAssertions.then(responseOrderData).isEqualTo(originalData);
     }
 
     @Test
@@ -91,30 +90,33 @@ public class OrderControllerTest {
 
         Collection<Order> originalData = jsonOrders(10);
 
-        when(orderService.getOrders(10)).thenReturn(originalData);
+        final URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/order/")
+                .path(String.valueOf(totalElements))
+                .build().encode().toUri();
 
-        MvcResult mvcResult = mockMvc.perform(get("/order/" + totalElements))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(header().string("Content-Type", "application/json;charset=UTF-8"))
-                .andReturn();
+        final RequestEntity<Void> requestEntity = RequestEntity
+                .get(uri)
+                .build();
 
-        String contentAsString = mvcResult.getResponse().getContentAsString();
-        Collection<Order> returnedData = objectMapper.readValue(contentAsString, new TypeReference<Collection<Order>>() {
-        });
+        final ResponseEntity<Collection<Order>> responseEntity = restTemplate
+                .exchange(requestEntity, new ParameterizedTypeReference<Collection<Order>>() {
+                });
 
-        assertTrue(returnedData.containsAll(originalData));
+        Collection<Order> responseOrderData = responseEntity.getBody();
+
+        BDDAssertions.then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BDDAssertions.then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/json;charset=UTF-8");
+        BDDAssertions.then(responseOrderData).containsAll(originalData);
     }
 
 
     private Collection<Order> jsonOrders(int totalElements) {
-        int PRICE_IN_CENTS = 100000;
+        final Collection<Order> orderCollection = new ArrayList<>(totalElements);
         int INITIAL_ORDER_ID = 10000000;
         String PERSON_NAME = "John Conceição";
         String ID_PRODUCT_1 = "XXX-2121-333-11";
         String ID_PRODUCT_2 = "YYY-3333-121-21";
         String ID_PRODUCT_3 = "941-6957-219-41";
-        final Collection<Order> orderCollection = new ArrayList<>(totalElements);
 
         IntStream.range(0, totalElements)
                 .forEach(
@@ -123,21 +125,21 @@ public class OrderControllerTest {
                                     Product.builder()
                                             .id(ID_PRODUCT_1)
                                             .productType(ProductType.COMMON)
-                                            .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
+                                            .priceInCents(iteration)
                                             .build();
 
                             final Product product2 =
                                     Product.builder()
                                             .id(ID_PRODUCT_2)
                                             .productType(ProductType.COMMON)
-                                            .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
+                                            .priceInCents(iteration)
                                             .build();
 
                             final Product product3 =
                                     Product.builder()
                                             .id(ID_PRODUCT_3)
                                             .productType(ProductType.COMMON)
-                                            .priceInCents(new Random().nextInt(PRICE_IN_CENTS))
+                                            .priceInCents(iteration)
                                             .build();
 
                             final Person person = Person.builder().name(PERSON_NAME).build();
@@ -155,32 +157,36 @@ public class OrderControllerTest {
     }
 
     private OrdersProto.Orders getProtoData(int totalElements) {
-        int PRICE_IN_CENTS = 100000;
         int INITIAL_ORDER_ID = 10000000;
-        final String PERSON_NAME = "John Conceição";
+        String PERSON_NAME = "John Conceição";
+        String ID_PRODUCT_1 = "XXX-2121-333-11";
+        String ID_PRODUCT_2 = "YYY-3333-121-21";
+        String ID_PRODUCT_3 = "941-6957-219-41";
+
         final OrdersProto.Orders.Builder orders = OrdersProto.Orders.newBuilder();
+
         IntStream.range(0, totalElements)
                 .forEach(
                         iteration -> {
                             final OrdersProto.Product product1 =
                                     OrdersProto.Product.newBuilder()
-                                            .setId("123")
+                                            .setId(ID_PRODUCT_1)
                                             .setProductType(OrdersProto.Product.ProductType.COMMON)
-                                            .setPriceInCents(new Random().nextInt(PRICE_IN_CENTS))
+                                            .setPriceInCents(iteration)
                                             .build();
 
                             final OrdersProto.Product product2 =
                                     OrdersProto.Product.newBuilder()
-                                            .setId("456")
+                                            .setId(ID_PRODUCT_2)
                                             .setProductType(OrdersProto.Product.ProductType.COMMON)
-                                            .setPriceInCents(new Random().nextInt(PRICE_IN_CENTS))
+                                            .setPriceInCents(iteration)
                                             .build();
 
                             final OrdersProto.Product product3 =
                                     OrdersProto.Product.newBuilder()
-                                            .setId("789")
+                                            .setId(ID_PRODUCT_3)
                                             .setProductType(OrdersProto.Product.ProductType.GIFT)
-                                            .setPriceInCents(new Random().nextInt(PRICE_IN_CENTS))
+                                            .setPriceInCents(iteration)
                                             .build();
 
                             final OrdersProto.Person person = OrdersProto.Person.newBuilder().setName(PERSON_NAME).build();
