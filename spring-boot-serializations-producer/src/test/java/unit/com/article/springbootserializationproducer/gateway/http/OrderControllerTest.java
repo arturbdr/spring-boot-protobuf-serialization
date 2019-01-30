@@ -9,14 +9,11 @@ import com.article.springbootserializationproducer.gateway.http.OrderController;
 import com.article.springbootserializationproducer.usecase.OrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.BDDAssertions;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,19 +24,19 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 public class OrderControllerTest {
 
-    @Mock
-    OrderService orderService;
+    private OrderService orderService;
 
     private MockMvc mockMvc;
 
@@ -47,7 +44,7 @@ public class OrderControllerTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        orderService = mock(OrderService.class);
         OrderController orderController = new OrderController(orderService);
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setMessageConverters(new ProtobufHttpMessageConverter(), new MappingJackson2HttpMessageConverter())
@@ -57,16 +54,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void testGetOrdersProtoShouldReturn() throws Exception {
-        int totalElements = 10;
-
-        mockMvc.perform(get("/proto/order/" + totalElements))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testGetOrdersProtoShouldReturn10ElemenstInProtobufFormat() throws Exception {
+    public void shouldReturn10ElementsInProtobufFormat() throws Exception {
         int totalElements = 10;
 
         OrdersProto.Orders originalData = getProtoData(10);
@@ -81,12 +69,12 @@ public class OrderControllerTest {
                 .andExpect(header().string("X-Protobuf-Schema", "order.proto"))
                 .andReturn();
 
-        OrdersProto.Orders returnedData = OrdersProto.Orders.parseFrom(mvcResult.getResponse().getContentAsByteArray());
-        assertEquals(returnedData, originalData);
+        OrdersProto.Orders actualOrders = OrdersProto.Orders.parseFrom(mvcResult.getResponse().getContentAsByteArray());
+        then(actualOrders).isEqualToComparingFieldByFieldRecursively(originalData);
     }
 
     @Test
-    public void testGetOrdersShouldReturn10ElementsInJsonFormat() throws Exception {
+    public void shouldReturn10ElementsInJsonFormat() throws Exception {
         int totalElements = 10;
 
         Collection<Order> originalData = jsonOrders(10);

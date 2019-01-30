@@ -6,7 +6,6 @@ import com.article.springbootserializationproducer.domain.Order;
 import com.article.springbootserializationproducer.domain.Person;
 import com.article.springbootserializationproducer.domain.Product;
 import com.article.springbootserializationproducer.domain.ProductType;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
@@ -40,11 +40,13 @@ public class OrderControllerTest2 {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private static final String HTTP_LOCALHOST = "http://localhost:";
+
     @Test
-    public void testGetOrdersProtoShouldReturn() throws Exception {
+    public void testGetOrdersProtoShouldReturn() {
         int totalElements = 10;
 
-        final URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/proto/order/")
+        final URI uri = UriComponentsBuilder.fromHttpUrl(HTTP_LOCALHOST + port + "/proto/order/")
                 .path(String.valueOf(totalElements))
                 .build().encode().toUri();
 
@@ -55,7 +57,7 @@ public class OrderControllerTest2 {
         final ResponseEntity<OrdersProto.Orders> responseEntity = restTemplate
                 .exchange(requestEntity, OrdersProto.Orders.class);
 
-        BDDAssertions.then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
@@ -64,7 +66,7 @@ public class OrderControllerTest2 {
 
         OrdersProto.Orders originalData = getProtoData(10);
 
-        final URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/proto/order/")
+        final URI uri = UriComponentsBuilder.fromHttpUrl(HTTP_LOCALHOST + port + "/proto/order/")
                 .path(String.valueOf(totalElements))
                 .build().encode().toUri();
 
@@ -77,20 +79,20 @@ public class OrderControllerTest2 {
 
         OrdersProto.Orders responseOrderData = OrdersProto.Orders.parseFrom(responseEntity.getBody().toByteArray());
 
-        BDDAssertions.then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        BDDAssertions.then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/x-protobuf;charset=UTF-8");
-        BDDAssertions.then(responseEntity.getHeaders().getFirst("X-Protobuf-Message")).isEqualTo("com.article.springbootserialization.proto.Orders");
-        BDDAssertions.then(responseEntity.getHeaders().getFirst("X-Protobuf-Schema")).isEqualTo("order.proto");
-        BDDAssertions.then(responseOrderData).isEqualTo(originalData);
+        then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/x-protobuf;charset=UTF-8");
+        then(responseEntity.getHeaders().getFirst("X-Protobuf-Message")).isEqualTo("com.article.springbootserialization.proto.Orders");
+        then(responseEntity.getHeaders().getFirst("X-Protobuf-Schema")).isEqualTo("order.proto");
+        then(responseOrderData).isEqualTo(originalData);
     }
 
     @Test
-    public void testGetOrdersShouldReturn10ElementsInJsonFormat() throws Exception {
+    public void testGetOrdersShouldReturn10ElementsInJsonFormat() {
         int totalElements = 10;
 
         Collection<Order> originalData = jsonOrders(10);
 
-        final URI uri = UriComponentsBuilder.fromHttpUrl("http://localhost:" + port + "/order/")
+        final URI uri = UriComponentsBuilder.fromHttpUrl(HTTP_LOCALHOST + port + "/order/")
                 .path(String.valueOf(totalElements))
                 .build().encode().toUri();
 
@@ -104,9 +106,9 @@ public class OrderControllerTest2 {
 
         Collection<Order> responseOrderData = responseEntity.getBody();
 
-        BDDAssertions.then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        BDDAssertions.then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/json;charset=UTF-8");
-        BDDAssertions.then(responseOrderData).containsAll(originalData);
+        then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/json;charset=UTF-8");
+        then(responseOrderData).containsAll(originalData);
     }
 
 
