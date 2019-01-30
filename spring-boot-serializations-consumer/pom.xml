@@ -5,12 +5,12 @@
 
     <groupId>com.article</groupId>
     <artifactId>spring-boot-serialization-consumer</artifactId>
-    <version>1.0.${release}</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>spring-boot-serialization-consumer</name>
     <description>Spring Boot serialization consumer
-        This microservice is reponsible for consuming RESTful webservices from
+        This microservice is responsible for consuming RESTful webservices from
         the microservice spring-boot-serialization-producer.
     </description>
 
@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.5.RELEASE</version>
+        <version>2.1.2.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -34,7 +34,6 @@
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
         <protobuf-java.version>3.6.1</protobuf-java.version>
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
-        <revision>0-SNAPSHOT</revision> <!-- This is specific for the project release. Don't remove it -->
     </properties>
 
     <dependencies>
@@ -95,7 +94,7 @@
                             <goal>test-compile</goal>
                         </goals>
                         <configuration>
-                            <protocArtifact>com.google.protobuf:protoc:3.5.1:exe:${os.detected.classifier}
+                            <protocArtifact>com.google.protobuf:protoc:3.6.1:exe:${os.detected.classifier}
                             </protocArtifact>
                         </configuration>
                     </execution>
