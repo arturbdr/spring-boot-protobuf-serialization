@@ -14,8 +14,7 @@ Check the class `ProducerRestTemplate` to see the implementation.
 
 ### How to start locally
 - Requirements: You need to have both JDK and Protobuf compiler installed.
-- Both projects contains a .proto file that need to be compiled by the protobuf compiler. To generate a respective .java class from 
-this file type `mvn protobuf:compile` in the pom of any one of the projects.
+- Both projects contains a .proto file that need to be compiled by the protobuf compiler. Both projects also contains a plugin to generate a respective .java class from by the proto file. Just type `mvn protobuf:compile` in the pom of any one of the projects.
 
 ### PR/Issues/Doubt
 - Feel free to sugest improvements and/or ask doubts or point issues
