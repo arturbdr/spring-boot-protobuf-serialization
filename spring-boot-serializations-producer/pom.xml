@@ -29,7 +29,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
-        <protobuf-java.version>3.6.1</protobuf-java.version>
+        <protobuf-java.version>3.7.1</protobuf-java.version>
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
     </properties>
 
@@ -89,7 +89,7 @@
                             <goal>test-compile</goal>
                         </goals>
                         <configuration>
-                            <protocArtifact>com.google.protobuf:protoc:3.6.1:exe:${os.detected.classifier}
+                            <protocArtifact>com.google.protobuf:protoc:3.7.1:exe:${os.detected.classifier}
                             </protocArtifact>
                         </configuration>
                     </execution>
