@@ -9,12 +9,12 @@ and depends on the producer to work properly. The main purpose of this project i
 Check the class `ProducerRestTemplate` to see the implementation.
 
 ### Frameworks and libraries used
-- Spring Boot version 2.1.5 - For exposing the RESFull endpoint for both Protobuf objects as well as JSON also for Dependency Injection and all testing platform
+- Spring Boot version 2.1.6 - For exposing the RESFull endpoint for both Protobuf objects as well as JSON also for Dependency Injection and all testing platform
 - Lombok - To reduce Java verbosity using his annotations
 
 
 ### How to start locally
-- Requirements: You need to have both JDK and Protobuf compiler installed.
+- Requirements: You need to have both JDK 11 and Protobuf compiler installed.
 - Both projects contains a .proto file that need to be compiled by the protobuf compiler. Both projects also contains a plugin to generate a respective .java class from by the proto file. Just type `mvn protobuf:compile` in the pom of any one of the projects.
 
 ### PR/Issues/Doubt
