@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
+        <version>2.1.8.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -31,7 +31,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
-        <protobuf-java.version>3.7.1</protobuf-java.version>
+        <protobuf-java.version>3.9.1</protobuf-java.version>
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
     </properties>
 
@@ -101,7 +101,7 @@
                             <goal>test-compile</goal>
                         </goals>
                         <configuration>
-                            <protocArtifact>com.google.protobuf:protoc:3.7.1:exe:${os.detected.classifier}
+                            <protocArtifact>com.google.protobuf:protoc:3.9.1:exe:${os.detected.classifier}
                             </protocArtifact>
                         </configuration>
                     </execution>
@@ -123,17 +123,24 @@
             </plugin>
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>${maven-enforcer-plugin.version}</version>
-                <configuration>
-                    <rules>
-                        <requireMavenVersion>
-                            <version>3.3</version>
-                        </requireMavenVersion>
-                        <requireJavaVersion>
-                            <version>11</version>
-                        </requireJavaVersion>
-                    </rules>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.6</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>11</version>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
