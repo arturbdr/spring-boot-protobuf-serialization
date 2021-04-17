@@ -6,8 +6,8 @@ import com.article.springbootserializationproducer.domain.Order;
 import com.article.springbootserializationproducer.domain.Person;
 import com.article.springbootserializationproducer.domain.Product;
 import com.article.springbootserializationproducer.domain.ProductType;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -29,10 +29,10 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ContextConfiguration(classes = SpringBootSerializationApplication.class)
-public class OrderControllerTest2 {
+class OrderControllerTest2 {
 
     @LocalServerPort
     private int port;
@@ -43,7 +43,7 @@ public class OrderControllerTest2 {
     private static final String HTTP_LOCALHOST = "http://localhost:";
 
     @Test
-    public void testGetOrdersProtoShouldReturn() {
+    void testGetOrdersProtoShouldReturn() {
         int totalElements = 10;
 
         final URI uri = UriComponentsBuilder.fromHttpUrl(HTTP_LOCALHOST + port + "/proto/order/")
@@ -61,10 +61,10 @@ public class OrderControllerTest2 {
     }
 
     @Test
-    public void testGetOrdersProtoShouldReturn10ElemenstInProtobufFormat() throws Exception {
+    void testGetOrdersProtoShouldReturn10ElemenstInProtobufFormat() throws Exception {
         int totalElements = 10;
 
-        OrdersProto.Orders originalData = getProtoData(10);
+        OrdersProto.Orders originalData = getProtoData(totalElements);
 
         final URI uri = UriComponentsBuilder.fromHttpUrl(HTTP_LOCALHOST + port + "/proto/order/")
                 .path(String.valueOf(totalElements))
@@ -87,10 +87,10 @@ public class OrderControllerTest2 {
     }
 
     @Test
-    public void testGetOrdersShouldReturn10ElementsInJsonFormat() {
+    void testGetOrdersShouldReturn10ElementsInJsonFormat() {
         int totalElements = 10;
 
-        Collection<Order> originalData = jsonOrders(10);
+        Collection<Order> originalData = jsonOrders(totalElements);
 
         final URI uri = UriComponentsBuilder.fromHttpUrl(HTTP_LOCALHOST + port + "/order/")
                 .path(String.valueOf(totalElements))
@@ -101,13 +101,13 @@ public class OrderControllerTest2 {
                 .build();
 
         final ResponseEntity<Collection<Order>> responseEntity = restTemplate
-                .exchange(requestEntity, new ParameterizedTypeReference<Collection<Order>>() {
+                .exchange(requestEntity, new ParameterizedTypeReference<>() {
                 });
 
         Collection<Order> responseOrderData = responseEntity.getBody();
 
         then(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/json;charset=UTF-8");
+        then(responseEntity.getHeaders().getContentType().toString()).isEqualTo("application/json");
         then(responseOrderData).containsAll(originalData);
     }
 

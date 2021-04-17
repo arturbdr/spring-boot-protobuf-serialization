@@ -5,13 +5,13 @@ import com.article.springbootserializationproducer.SpringBootSerializationApplic
 import com.article.springbootserializationproducer.config.ProtobufHttpMessageConverterConfig;
 import com.article.springbootserializationproducer.gateway.http.OrderController;
 import com.article.springbootserializationproducer.usecase.OrderService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -25,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(OrderController.class)
 @ContextConfiguration(classes = {SpringBootSerializationApplication.class, ProtobufHttpMessageConverterConfig.class})
-public class OrderControllerTest1 {
+class OrderControllerTest1 {
 
     @MockBean
     private OrderService orderService;
@@ -37,12 +37,12 @@ public class OrderControllerTest1 {
     private MockMvc mockMvc;
 
     @Test
-    public void shouldReturn10ElementsInProtobufFormat() throws Exception {
+    void shouldReturn10ElementsInProtobufFormat() throws Exception {
         int totalElements = 10;
 
-        OrdersProto.Orders originalData = getProtoData(10);
+        OrdersProto.Orders originalData = getProtoData(totalElements);
 
-        when(orderService.getProtobufOrders(10)).thenReturn(originalData);
+        when(orderService.getProtobufOrders(totalElements)).thenReturn(originalData);
 
         MvcResult mvcResult = mockMvc.perform(get("/proto/order/" + totalElements))
                 .andDo(print())
@@ -53,7 +53,7 @@ public class OrderControllerTest1 {
                 .andReturn();
 
         OrdersProto.Orders actualOrders = OrdersProto.Orders.parseFrom(mvcResult.getResponse().getContentAsByteArray());
-        then(actualOrders).isEqualToComparingFieldByFieldRecursively(originalData);
+        then(actualOrders).isEqualTo(originalData);
     }
 
     private OrdersProto.Orders getProtoData(int totalElements) {
