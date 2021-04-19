@@ -58,7 +58,7 @@ public class ProducerRestTemplate implements ProducerGateway {
                 .build();
 
         final ResponseEntity<Collection<Order>> responseEntity =
-                defaultRestTemplate.exchange(requestEntity, new ParameterizedTypeReference<Collection<Order>>() {
+                defaultRestTemplate.exchange(requestEntity, new ParameterizedTypeReference<>() {
                 });
         return responseEntity.getBody();
     }
