@@ -14,6 +14,7 @@ message Order {
 }
 message Person {
     string name = 1;
+    Address address = 2;
 }
 message Product {
     string id = 1;
@@ -23,4 +24,9 @@ message Product {
         GIFT = 0;
         COMMON = 1;
     }
+}
+
+message Address {
+    string streeName = 1;
+    string city = 2;
 }
