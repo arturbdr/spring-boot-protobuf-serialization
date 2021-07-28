@@ -9,7 +9,7 @@ and depends on the producer to work properly. The main purpose of this project i
 Check the class `ProducerRestTemplate` to see the implementation.
 
 ### Frameworks and libraries used
-- Spring Boot version 2.4.5 - For exposing the RESFull endpoint for both Protobuf objects as well as JSON also for Dependency Injection and all testing platform
+- Spring Boot version 2.5.3 - For exposing the RESFull endpoint for both Protobuf objects as well as JSON also for Dependency Injection and all testing platform
 - Lombok - To reduce Java verbosity using his annotations
 
 
