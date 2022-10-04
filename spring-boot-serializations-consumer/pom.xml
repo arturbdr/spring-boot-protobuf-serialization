@@ -28,7 +28,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <protobuf-java-format.version>1.4</protobuf-java-format.version>
-        <protobuf-java.version>3.17.3</protobuf-java.version>
+        <protobuf-java.version>3.19.6</protobuf-java.version>
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
